@@ -14,7 +14,7 @@ CC <- read_csv("risk_factors_cervical_cancer.csv", na = c("?")) |>
          IUD_years = `IUD (years)`,
          STDs_number = `STDs (number)`,
          STD_condylomatosis = `STDs:condylomatosis`,
-         STD_cervical_condlomatosis = `STDs:cervical condylomatosis`,
+         STD_cervical_condylomatosis = `STDs:cervical condylomatosis`,
          STD_vaginal_condylomatosis = `STDs:vaginal condylomatosis`,
          STD_vulvo_perineal_condylomatosis = `STDs:vulvo-perineal condylomatosis`,
          STD_syphilis = `STDs:syphilis`,
@@ -42,10 +42,11 @@ CC <- read_csv("risk_factors_cervical_cancer.csv", na = c("?")) |>
   drop_na() |>
   ### Re-code Boolean variables as factors
   mutate(Smokes = as_factor(Smokes),
+         Contraceptives = as_factor(Contraceptives),
          IUD = as_factor(IUD),
          STDs = as_factor(STDs),
          STD_condylomatosis = as_factor(STD_condylomatosis),
-         STD_cervical_condlomatosis = as_factor(STD_cervical_condlomatosis),
+         STD_cervical_condylomatosis = as_factor(STD_cervical_condylomatosis),
          STD_vaginal_condylomatosis = as_factor(STD_vaginal_condylomatosis),
          STD_vulvo_perineal_condylomatosis = as_factor(STD_vulvo_perineal_condylomatosis),
          STD_syphilis = as_factor(STD_syphilis),
@@ -67,7 +68,15 @@ table(new_data$Cancer)
 
 write_csv(new_data, "CC.csv")
 
-x <- c(1, 5)
+
+fit <- glm(Cancer ~ Age + First, data = CC, family = binomial)
+predict <- predict(fit, newdata = data.frame(Age = c(60,50), First = c(16,18), type = "response"))
+as_factor(ifelse(predict >0.5, 1, 0))
+
+CC$Cancer
+predict
+
+
 
 
 
