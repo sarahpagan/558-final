@@ -1,45 +1,24 @@
 library(shiny)
-library(readr)
-library(dplyr)
-library(forcats)
 library(shinyWidgets)
-
-### Read in Data and re-code Boolean variables as factors
-data <- read_csv("CC.csv") |>
-    mutate(Smokes = as_factor(Smokes),
-           Contraceptives = as_factor(Contraceptives),
-           IUD = as_factor(IUD),
-           STDs = as_factor(STDs),
-           STD_condylomatosis = as_factor(STD_condylomatosis),
-           STD_cervical_condylomatosis = as_factor(STD_cervical_condylomatosis),
-           STD_vaginal_condylomatosis = as_factor(STD_vaginal_condylomatosis),
-           STD_vulvo_perineal_condylomatosis = as_factor(STD_vulvo_perineal_condylomatosis),
-           STD_syphilis = as_factor(STD_syphilis),
-           STD_pelvic_inflammatory_disease = as_factor(STD_pelvic_inflammatory_disease),
-           STD_genital_herpes = as_factor(STD_genital_herpes),
-           STD_molluscum_contagiosum = as_factor(STD_molluscum_contagiosum),
-           STD_AIDS = as_factor(STD_AIDS),
-           STD_HIV = as_factor(STD_HIV),
-           STD_HepatitisB = as_factor(STD_HepatitisB),
-           STD_HPV = as_factor(STD_HPV),
-           Dx_Cancer = as_factor(Dx_Cancer),
-           Dx_CIN = as_factor(Dx_CIN),
-           Dx_HPV = as_factor(Dx_HPV),
-           Cancer = as_factor(Cancer)) |>
-    ### Drop factors with only one level (no observations)
-    select(-STD_cervical_condylomatosis,
-           -STD_vaginal_condylomatosis,
-           -STD_pelvic_inflammatory_disease,
-           -STD_AIDS,
-           -STD_HepatitisB)
-
 
 variables <- c("Age", "Partners", "First", "Pregnancies", "Smokes",
                "Smokes_years", "Contraceptives", "Contraceptives_years",
                "IUD", "IUD_years", "STDs", "STDs_number", "STD_condylomatosis",
                "STD_vulvo_perineal_condylomatosis", "STD_syphilis",
                "STD_genital_herpes", "STD_molluscum_contagiosum", "STD_HIV",
-               "STD_HPV", "Dx_Cancer", "Dx_CIN", "Dx_HPV") 
+               "STD_HPV", "Dx_Cancer", "Dx_CIN", "Dx_HPV")
+
+numeric_names  <- c("Age", "Number of Sexual Partners", "Number of Pregnancies", "Age of First Sexual Intercourse", "Years of Smoking", "Years of Hormonal Contraceptive Use", "Years with IUD", "Number of STDs")
+
+numeric_vals <- c("Age", "Partners", "Pregnancies", "First", "Smokes_years", "Contraceptives_years", "IUD_years", "STDs_number")
+
+cat_names <- c("Smokes", "Use of Hormonal Contraceptive", "Use of IUD", "Any STDs")
+
+cat_vals <- c("Smokes", "Contraceptives", "IUD", "STDs")
+
+facet_names <- c("None", "Smokes", "Use of Hormonal Contraceptive", "Use of IUD", "Any STDs")
+
+facet_vals <- c("None", "Smokes", "Contraceptives", "IUD", "STDs")
 
 fluidPage(
     
@@ -47,7 +26,41 @@ fluidPage(
     
     tabsetPanel(
         tabPanel("About"),
-        tabPanel("Data Exploration"),
+        tabPanel("Data Exploration",
+                
+                 h2("Numeric Summaries"),
+                 fluidRow(
+                     column(2,
+                            br(),
+                            radioButtons("numeric", 
+                                         "Select Variable to Summarize",
+                                         choiceNames = numeric_names,
+                                         choiceValues = numeric_vals),
+                            br(),
+                            materialSwitch("group",
+                                           "Group by Cancer Occurence",
+                                           value = TRUE)),
+                     column(5, plotOutput("plot1")),
+                     column(5, plotOutput("plot2"))),
+                 
+                 fluidRow(column(2, br()),
+                          column(10, dataTableOutput("table"))),
+                 br(),
+                 
+                 h2("Categorical Summaries"),
+                 fluidRow(column(2,
+                                 radioButtons("cat",
+                                              "Select Variable to Summarize",
+                                              choiceNames = cat_names,
+                                              choiceValues = cat_vals),
+                                 radioButtons("facet",
+                                              "Select Faceting Variable",
+                                              choiceNames = facet_names,
+                                              choiceValues = facet_vals)),
+                          column(5, plotOutput("plot3")),
+                          column(5, plotOutput("plot4")))
+                
+                 ),
         tabPanel("Modeling",
                  
                  tabsetPanel(
@@ -100,31 +113,68 @@ fluidPage(
                               br(),
                               fluidRow(
                                   column(3,
-                                         numericInput("age", "Age",
-                                                      value = 50, min = 1, max = 100),
-                                         numericInput("partners", "Number of sexual partners",
-                                                      value = 0, min = 0, max = 100),
-                                         numericInput("first", "Age of first sexual intercourse",
-                                                      value = 0, min = 0, max = 100),
-                                         numericInput("preg", "Number of pregnancies",
-                                                      value = 0, min = 0, max = 100),
-                                         numericInput("smokes", "Smokes",
-                                                      value = 0, min = 0, max = 1),
-                                         numericInput("smokeyrs", "Years of smoking",
-                                                      value = 0, min = 0, max = 100)),
+                                         numericInput("age",
+                                                      "Age",
+                                                      value = 50,
+                                                      min = 1,
+                                                      max = 100),
+                                         numericInput("partners",
+                                                      "Number of sexual partners",
+                                                      value = 0,
+                                                      min = 0,
+                                                      max = 100),
+                                         numericInput("first",
+                                                      "Age of first sexual intercourse",
+                                                      value = 0,
+                                                      min = 0,
+                                                      max = 100),
+                                         numericInput("preg",
+                                                      "Number of pregnancies",
+                                                      value = 0,
+                                                      min = 0,
+                                                      max = 100),
+                                         numericInput("smokes",
+                                                      "Smokes",
+                                                      value = 0,
+                                                      min = 0,
+                                                      max = 1),
+                                         numericInput("smokeyrs",
+                                                      "Years of smoking",
+                                                      value = 0,
+                                                      min = 0,
+                                                      max = 100)),
                                   column(3, 
-                                         numericInput("cont", "Use of hormonal contraceptives",
-                                                      value = 0, min = 0, max = 1),
-                                         numericInput("contyrs", "Years of hormonal contraceptive use",
-                                                      value = 0, min = 0, max = 100),
-                                         numericInput("iud", "Use of IUD",
-                                                      value = 0, min = 0, max = 1),
-                                         numericInput("iudyrs", "Years with IUD",
-                                                      value = 0, min = 0, max = 100),
-                                         numericInput("stds", "Any STDs",
-                                                      value = 0, min = 0, max = 1),
-                                         numericInput("stdsyrs", "Number of STDs",
-                                                      value = 0, min = 0, max = 10)),
+                                         numericInput("cont",
+                                                      "Use of hormonal contraceptives",
+                                                      value = 0,
+                                                      min = 0,
+                                                      max = 1),
+                                         numericInput("contyrs",
+                                                      "Years of hormonal 
+                                                      ontraceptive use",
+                                                      value = 0,
+                                                      min = 0,
+                                                      max = 100),
+                                         numericInput("iud",
+                                                      "Use of IUD",
+                                                      value = 0,
+                                                      min = 0,
+                                                      max = 1),
+                                         numericInput("iudyrs",
+                                                      "Years with IUD",
+                                                      value = 0,
+                                                      min = 0,
+                                                      max = 100),
+                                         numericInput("stds",
+                                                      "Any STDs",
+                                                      value = 0,
+                                                      min = 0,
+                                                      max = 1),
+                                         numericInput("stdsyrs",
+                                                      "Number of STDs",
+                                                      value = 0,
+                                                      min = 0,
+                                                      max = 10)),
                                   column(3,
                                          numericInput("c", "Condylomatosis",
                                                       value = 0, min = 0, max = 1),
