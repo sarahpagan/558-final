@@ -10,7 +10,7 @@ function(input, output, session) {
     
 ######## Read in Data
     
-    data <- read_csv("CC.csv") |>
+    data <- read_csv("data/CC.csv") |>
         mutate(Smokes = as_factor(Smokes),
                Contraceptives = as_factor(Contraceptives),
                IUD = as_factor(IUD),
@@ -188,6 +188,7 @@ function(input, output, session) {
     })
     
     rf_fit <- eventReactive(input$button, {
+        withProgress(message = "Computing Models...", {
         mtry <- input$range
         train(Cancer ~ ., data = train_data(),
               method = "rf",
@@ -196,6 +197,11 @@ function(input, output, session) {
               trControl = trainControl(method = "cv",
                                        number = input$cvfolds),
               tuneGrid = data.frame(mtry = mtry[1]:mtry[2]))
+        })
+    })
+    
+    var_imp <- eventReactive (input$button, {
+        varImp(rf_fit(), scale = FALSE)
     })
     
     logit_test_title <- eventReactive(input$button, {
@@ -207,6 +213,16 @@ function(input, output, session) {
         preds <- predict(logit_fit(), newdata = test, type = "response")
         classify <- ifelse(preds > 0.5, 1, 0)
         confusionMatrix(as_factor(classify), test$Cancer)
+    })
+    
+    rf_test <- eventReactive(input$button, {
+        test <- test_data()
+        preds <- predict(rf_fit(), newdata = test)
+        confusionMatrix(preds, test$Cancer)
+    })
+    
+    rf_test_title <- eventReactive(input$button, {
+        "Random Forest Test Results"
     })
     
     output$glmt <- renderText({
@@ -226,12 +242,25 @@ function(input, output, session) {
         rf_fit()
     })
     
+    output$imp <- renderPlot({
+        var_imp <- var_imp()
+        plot(var_imp, top = 10)
+    })
+    
     output$glm_test_title <- renderText({
         logit_test_title()
     })
     
     output$glm_test <- renderPrint({
         logit_test()
+    })
+    
+    output$rf_test_title <- renderText({
+        logit_test_title()
+    })
+    
+    output$rf_test <- renderPrint({
+        rf_test()
     })
     
 ####################

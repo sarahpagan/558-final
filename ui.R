@@ -100,11 +100,16 @@ fluidPage(
                                   h3(textOutput("glmt")),
                                   verbatimTextOutput("glm"),
                                   h3(textOutput("rft")),
-                                  verbatimTextOutput("rf"),
+                                  fluidRow(
+                                      column(6, verbatimTextOutput("rf")),
+                                       column(6, plotOutput("imp"))),
                                   fluidRow(
                                       column(6,
                                              h3(textOutput("glm_test_title")),
-                                             verbatimTextOutput("glm_test"))))),
+                                             verbatimTextOutput("glm_test")),
+                                      column(6,
+                                             h3(textOutput("rf_test_title")),
+                                             verbatimTextOutput("rf_test"))))),
                                       
                      ### Prediction
                      tabPanel("Prediction",
