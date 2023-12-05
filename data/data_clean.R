@@ -5,7 +5,7 @@ library(forcats)
 library(performanceEstimation)
 
 
-CC <- read_csv("risk_factors_cervical_cancer.csv", na = c("?")) |>
+CC <- read_csv("data/risk_factors_cervical_cancer.csv", na = c("?")) |>
   rename(Partners = `Number of sexual partners`,
          First = `First sexual intercourse`,
          Pregnancies = `Num of pregnancies`,
@@ -68,18 +68,3 @@ new_data <- smote(Cancer ~ ., CC, perc.over = 2, perc.under = 2)
 table(new_data$Cancer)
 
 write_csv(new_data, "CC.csv")
-
-
-fit <- glm(Cancer ~ Age + First, data = CC, family = binomial)
-predict <- predict(fit, newdata = data.frame(Age = c(60,50), First = c(16,18), type = "response"))
-y = as_factor(ifelse(predict >0.5, 1, 0))
-
-x <- as_factor(c(0, 1))
-
-confusionMatrix(data = y, reference = x)
-
-
-g <- ggplot(data, aes(x = IUD))
-g + geom_bar(aes(fill = Cancer), position = "dodge") +
-  facet_wrap(~Smokes)
-  
