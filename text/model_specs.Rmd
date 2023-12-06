@@ -1,0 +1,9 @@
+To fit the models you will need to specify the following:
+
+1. **Data partition**. This is the percent of the data to be allocated to training the model and the percent of data you to be allocated to testing the model.
+
+2. **Variables** to be included in the logistic regression model.
+
+3. **Number of variables** to sample for the random forest model. This is a range for $m$. The optimal $m$ will be determined through cross validation.
+
+4. **Number of cross validation folds** used to train the random forest model. Cross validation is a re-sampling method that uses different portions of the training data to train and test a model across a grid of parameters.

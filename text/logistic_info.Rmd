@@ -6,6 +6,4 @@ Where $p$ is the probability $Y=1$, $x_i$ are the explanatory variables, and $m$
 
 The logistic regression model assumes a linear relationship between the independent and explanatory variables. Therefore, it is somewhat limited compared the random forest model, which can model more complex relationships between the variables. 
 
-Logistic regression also does not involve implicit feature selection. Choosing and scaling what and how many predictor variables to include in the model needs to be done manually. 
-
-Compared to random forest, however, logistical regression models are quick to train and computationally inexpensive, and the final regression coefficients are highly interpretable.
+Logistic regression does not involve implicit feature selection. Choosing predictor variables and scaling how many predictor variables to include in the model needs to be done manually. On the positive side, regression models are computationally inexpensive, and the final regression coefficients are highly interpretable.

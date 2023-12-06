@@ -105,7 +105,7 @@ function(input, output, session) {
                     facet_wrap(~get(input$facet)) +
                     scale_fill_manual(values = c("cyan2", "deeppink")) +
                     xlab(input$cat) +
-                    labs(title = paste0("Occurence of Cervical cancer by ",
+                    labs(title = paste0("Occurence of Cervical Cancer by ",
                                         input$cat),
                          subtitle = paste0("Faceted by ", input$facet))}
     })

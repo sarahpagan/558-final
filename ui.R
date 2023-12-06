@@ -82,7 +82,6 @@ fluidPage(
                                      outcomes are"),
                                   h3("logistic regression and random forest."),
                                   br(),
-                                  br(),
                                   fluidRow(
                                       withMathJax(),
                                       column(6,
@@ -90,7 +89,9 @@ fluidPage(
                                       column(6,
                                              includeMarkdown("text/rf_info.Rmd"))),
                                   fluidRow(
-                                      h2("Modeling Specifications")
+                                      h2("Modeling Specifications"),
+                                      br(),
+                                      includeMarkdown("text/model_specs.Rmd")
                                   ))),
                      
                 
@@ -113,7 +114,7 @@ fluidPage(
                                   br(),
                                   h4("Random Forest"),
                                   numericRangeInput("range",
-                                                    "Select Range of 
+                                                    "Select Number of 
                                                     Variables to Sample",
                                                     value = c(1, 5),
                                                     min = 1,
