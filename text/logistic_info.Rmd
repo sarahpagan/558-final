@@ -1,0 +1,11 @@
+The **logistic regression** approach models the response variable as the log odds of a "positive" outcome. The logistic regression equation is:
+
+$$ln(\frac{p}{1-p}) = \beta_0 + \beta_1x_1 + ... + \beta_m x_m$$
+
+Where $p$ is the probability $Y=1$, $x_i$ are the explanatory variables, and $m$ is the number of explanatory variables included in the model. The regression coefficients $\beta_i$ can be interpreted as the change in the log-odds of $Y=1$ given a one unit change $x_i$, holding all other variables in the model constant. 
+
+The logistic regression model assumes a linear relationship between the independent and explanatory variables. Therefore, it is somewhat limited compared the random forest model, which can model more complex relationships between the variables. 
+
+Logistic regression also does not involve implicit feature selection. Choosing and scaling what and how many predictor variables to include in the model needs to be done manually. 
+
+Compared to random forest, however, logistical regression models are quick to train and computationally inexpensive, and the final regression coefficients are highly interpretable.

@@ -1,0 +1,7 @@
+The **random forest** approach is an ensemble-based learning method. Random forest involves bootstrap aggregation, which is a method of re-sampling the data with replacement and fitting a decision tree many times. The objective of bootstrap aggregation is to reduce the variance of predictions. 
+
+Furthermore, each decision tree is fit with only a subset of predictors, $m$, to prevent one variable from dominating all tree fits. An ideal level of $m$ can be determined through cross validation.
+
+Random Forest computes the majority vote from the terminal leaf nodes of all fitted trees to make a final prediction. Random forest are designed to produce significant improvements in the accuracy of predictions over single fitted trees.
+
+One disadvantage to random forest models over logistic regression models and single fitted trees, is their lack of interpretability. It becomes more difficult to examine the relationship between the response and predictor variables when estimates are being obtained by majority vote. For this reason, a variable importance plot is included alongside the random forest model output.

@@ -1,6 +1,8 @@
 library(shiny)
 library(shinyWidgets)
 
+######## Defining objects
+
 variables <- c("Age", "Partners", "First", "Pregnancies", "Smokes",
                "Smokes_years", "Contraceptives", "Contraceptives_years",
                "IUD", "IUD_years", "STDs", "STDs_number", "STD_condylomatosis",
@@ -8,17 +10,24 @@ variables <- c("Age", "Partners", "First", "Pregnancies", "Smokes",
                "STD_genital_herpes", "STD_molluscum_contagiosum", "STD_HIV",
                "STD_HPV", "Dx_Cancer", "Dx_CIN", "Dx_HPV")
 
-numeric_names  <- c("Age", "Number of Sexual Partners", "Number of Pregnancies", "Age of First Sexual Intercourse", "Years of Smoking", "Years of Hormonal Contraceptive Use", "Years with IUD", "Number of STDs")
+numeric_names  <- c("Age", "Number of Sexual Partners", "Number of Pregnancies",
+                    "Age of First Sexual Intercourse", "Years of Smoking",
+                    "Years of Hormonal Contraceptive Use", "Years with IUD",
+                    "Number of STDs")
 
-numeric_vals <- c("Age", "Partners", "Pregnancies", "First", "Smokes_years", "Contraceptives_years", "IUD_years", "STDs_number")
+numeric_vals <- c("Age", "Partners", "Pregnancies", "First", "Smokes_years",
+                  "Contraceptives_years", "IUD_years", "STDs_number")
 
 cat_names <- c("Smokes", "Use of Hormonal Contraceptive", "Use of IUD", "Any STDs")
 
 cat_vals <- c("Smokes", "Contraceptives", "IUD", "STDs")
 
-facet_names <- c("None", "Smokes", "Use of Hormonal Contraceptive", "Use of IUD", "Any STDs")
+facet_names <- c("None", "Smokes", "Use of Hormonal Contraceptive",
+                 "Use of IUD", "Any STDs")
 
 facet_vals <- c("None", "Smokes", "Contraceptives", "IUD", "STDs")
+
+##########################
 
 fluidPage(
     
@@ -64,8 +73,27 @@ fluidPage(
         tabPanel("Modeling",
                  
                  tabsetPanel(
-                     tabPanel("Model Info"),
+                     tabPanel("Modeling Info",
+                              fluidPage(
+                                  h2("Modeling Info"),
+                                  br(),
+                                  h4("The two approaches used by this application to 
+                                     model the binary classification of cervical cancer 
+                                     outcomes are"),
+                                  h3("logistic regression and random forest."),
+                                  br(),
+                                  br(),
+                                  fluidRow(
+                                      withMathJax(),
+                                      column(6,
+                                             includeMarkdown("text/logistic_info.Rmd")),
+                                      column(6,
+                                             includeMarkdown("text/rf_info.Rmd"))),
+                                  fluidRow(
+                                      h2("Modeling Specifications")
+                                  ))),
                      
+                
                      ### Model fitting
                      tabPanel("Model Fitting",
                               sidebarPanel(
@@ -85,7 +113,8 @@ fluidPage(
                                   br(),
                                   h4("Random Forest"),
                                   numericRangeInput("range",
-                                                    "Select Range of Variables to Sample",
+                                                    "Select Range of 
+                                                    Variables to Sample",
                                                     value = c(1, 5),
                                                     min = 1,
                                                     max = 10),
