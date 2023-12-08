@@ -1,10 +1,8 @@
 library(shiny)
 library(readr)
-library(dplyr)
-library(forcats)
+library(tidyverse)
 library(caret)
-library(tidyr)
-library(ggplot2)
+
 
 function(input, output, session) {
     
@@ -38,7 +36,7 @@ function(input, output, session) {
                -STD_AIDS,
                -STD_HepatitisB)
 
-######################
+#########################
 
 ######## Data Exploration
     
@@ -154,6 +152,8 @@ function(input, output, session) {
                  subtitle = paste0("Total STD count across all patients = ",
                                    sum(donut$count)))
     })
+
+######################
  
 ######## Model fitting   
     
@@ -263,8 +263,7 @@ function(input, output, session) {
         rf_test()
     })
     
-####################
-    
+###################
     
 ######## Prediction
     
@@ -334,3 +333,9 @@ function(input, output, session) {
         predict(rf_fit(), newdata = new(), type = "prob")
     })
 }
+
+
+install.packages(c("shiny",
+                   "shinyWidgets",
+                   "tidyverse",
+                   )
