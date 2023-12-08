@@ -333,9 +333,3 @@ function(input, output, session) {
         predict(rf_fit(), newdata = new(), type = "prob")
     })
 }
-
-
-install.packages(c("shiny",
-                   "shinyWidgets",
-                   "tidyverse",
-                   )
