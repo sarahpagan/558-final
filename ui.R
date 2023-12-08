@@ -31,13 +31,22 @@ facet_vals <- c("None", "Smokes", "Contraceptives", "IUD", "STDs")
 
 fluidPage(
     
-    titlePanel("Title"),
+    titlePanel("Cervical Cancer Risk"),
     
     tabsetPanel(
-        tabPanel("About"),
+        tabPanel("About",
+                 mainPanel(
+                     h3("About the App"),
+                     includeMarkdown("text/about.Rmd"),
+                     img(src = "cancer.jpg"),
+                     br(),
+                     h4("The variables available for modeling are:"),
+                     includeMarkdown("text/variables.Rmd"))),
+                    
+
         tabPanel("Data Exploration",
                 
-                 h2("Numeric Summaries"),
+                 h3("Numeric Summaries"),
                  fluidRow(
                      column(2,
                             br(),
@@ -56,7 +65,7 @@ fluidPage(
                           column(10, dataTableOutput("table"))),
                  br(),
                  
-                 h2("Categorical Summaries"),
+                 h3("Categorical Summaries"),
                  fluidRow(column(2,
                                  radioButtons("cat",
                                               "Select Variable to Summarize",
@@ -67,19 +76,15 @@ fluidPage(
                                               choiceNames = facet_names,
                                               choiceValues = facet_vals)),
                           column(5, plotOutput("plot3")),
-                          column(5, plotOutput("plot4")))
-                
-                 ),
+                          column(5, plotOutput("plot4")))),
+        
         tabPanel("Modeling",
                  
                  tabsetPanel(
                      tabPanel("Modeling Info",
                               fluidPage(
-                                  h2("Modeling Info"),
                                   br(),
-                                  h4("The two approaches used by this application to 
-                                     model the binary classification of cervical cancer 
-                                     outcomes are"),
+                                  h4("The two approaches used to model cervical cancer risk are"),
                                   h3("logistic regression and random forest."),
                                   br(),
                                   fluidRow(
@@ -87,15 +92,9 @@ fluidPage(
                                       column(6,
                                              includeMarkdown("text/logistic_info.Rmd")),
                                       column(6,
-                                             includeMarkdown("text/rf_info.Rmd"))),
-                                  fluidRow(
-                                      h2("Modeling Specifications"),
-                                      br(),
-                                      includeMarkdown("text/model_specs.Rmd")
-                                  ))),
+                                             includeMarkdown("text/rf_info.Rmd")))
+                                  )),
                      
-                
-                     ### Model fitting
                      tabPanel("Model Fitting",
                               sidebarPanel(
                                   sliderInput("slider",
@@ -120,7 +119,7 @@ fluidPage(
                                                     min = 1,
                                                     max = 10),
                                   numericInput("cvfolds",
-                                               "Select Number of CV Folds",
+                                               "Select Number of Cross Validation Folds",
                                                     value = 5,
                                                     min = 2,
                                                     max = 10),
@@ -140,10 +139,9 @@ fluidPage(
                                       column(6,
                                              h3(textOutput("rf_test_title")),
                                              verbatimTextOutput("rf_test"))))),
-                                      
-                     ### Prediction
+    
                      tabPanel("Prediction",
-                              h3("Enter predictor values below to make a prediction"),
+                              h3("Enter values below to make a prediction"),
                               h4("Note: yes = 1 and no = 0"),
                               br(),
                               fluidRow(

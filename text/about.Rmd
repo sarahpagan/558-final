@@ -1,0 +1,7 @@
+The purpose of this application is to provide a platform for building logistic regression and random forest models to predict cervical cancer risk. The data, **Cervical Cancer (Risk Factors)**, was obtained from the [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/dataset/383/cervical+cancer+risk+factors). The data was originally collected at the Hospital Universitario de Caracas in Caracas, Venezuela.
+
+The data contains four target variables indicating the presence of cervical cancer in patients based on four different cancer detection methods. These are Hinselmann, Schiller, Cytology, and Biopsy. A fifth variable was created to indicate if any of the four detection methods were positive. This is the final response variable used for modeling.
+
+After removing observations with missing values, the data contains 668 patients. The data is significantly imbalanced. Only 86 patients have cervical cancer and 582 patients do not have cervical cancer. This makes the classification problem more challenging. To deal with this imbalance, a synthetic minority oversampling technique (SMOTE) was employed. SMOTE generates new positive observations by selecting a random point from the minority class and generating a synthetic observation using a K nearest neighbors approach. For every new observation created, a number of majority class observations are sampled to be retained. The final data used for modeling contains 258 observations of cervical cancer and 344 observations of no cervical cancer.
+
+
