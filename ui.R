@@ -142,7 +142,8 @@ fluidPage(
     
                      tabPanel("Prediction",
                               h3("Enter values below to make a prediction"),
-                              h4("Note: yes = 1 and no = 0"),
+                              h4("Note: predictions are made using the most recent fitted models"),
+                              h4("yes = 1 and no = 0"),
                               br(),
                               fluidRow(
                                   column(3,
